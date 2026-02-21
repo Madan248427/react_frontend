@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Chatbot from "../chatbot/Chatbot";
+import Chatbot from "./chatbot/Chatbot";
 
 const MainLayout = () => {
   return (

@@ -5,7 +5,7 @@
 
 /* Main content area */
 .user-main {
-    /* margin-left: 260px; */
+    margin-left: 260px;
     /* same as sidebar width */
     width: calc(100% - 260px);
     min-width: 0;

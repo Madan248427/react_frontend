@@ -3,7 +3,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // Layout
-import MainLayout from "./layouts/MainLayout"; // MainLayout includes <Chatbot /> + <Outlet />
+import MainLayout from "./MainLayout"; // MainLayout includes <Chatbot /> + <Outlet />
 
 // Auth / Public
 import Login from "./pages/Login/Login";
@@ -11,6 +11,7 @@ import Register from "./pages/Registration/Register";
 import ForgetPassword from "./pages/ForgotPassword/ForgotPassword";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailure from "./pages/PaymentFailure";
+import UserLayout from "./UserLayout";
 
 // Protected
 import ProtectedRoute from "./context/ProtectedRoute";
@@ -36,6 +37,7 @@ import NoticePage from "./pages/Notice/NoticePage";
 // Misc
 import Unauthorized from "./pages/PageNotFound/NotFound";
 
+
 function App() {
   return (
     <Routes>
@@ -55,6 +57,7 @@ function App() {
 
         {/* ============ USER PROTECTED ROUTES ============ */}
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
+          <Route element={<UserLayout />}>
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/books" element={<BookListPage />} />
           <Route path="/books/:id" element={<BookDetailPage />} />
@@ -63,9 +66,11 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
+        </Route>
 
         {/* ============ EMPLOYEE/ADMIN PROTECTED ROUTES ============ */}
         <Route element={<ProtectedRoute allowedRoles={["employee"]} />}>
+        <Route element={<UserLayout />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/add-book" element={<AddBook />} />
           <Route path="/edit-book/:id" element={<EditBook />} />
@@ -75,11 +80,14 @@ function App() {
           <Route path="/transaction" element={<Transaction />} />
           <Route path="/notices" element={<NoticePage />} />
         </Route>
+        </Route>
 
         {/* ============ SHARED PROTECTED ROUTES ============ */}
         <Route element={<ProtectedRoute allowedRoles={["user", "employee"]} />}>
+        <Route element={<UserLayout />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+        </Route>
         </Route>
 
         {/* ============ FALLBACK / ERROR ROUTES ============ */}
