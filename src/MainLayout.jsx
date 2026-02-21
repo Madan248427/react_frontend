@@ -1,31 +1,17 @@
-"use client";
-
-import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./pages/Sidebar/Sidebar";
+import Chatbot from "../chatbot/Chatbot";
 
 const MainLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
   return (
-    <>
-      <Sidebar open={sidebarOpen} toggle={toggleSidebar} />
-      {sidebarOpen && (
-        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
-      )}
+    <div className="main-layout">
+      {/* Your Chatbot is always visible */}
+      <Chatbot />
 
-      <div
-        className="main-content"
-        style={{
-          marginLeft: "260px", // leave space for sidebar on desktop
-          transition: "margin-left 0.3s ease",
-        }}
-      >
+      {/* Page content renders here */}
+      <div className="page-content">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,83 +1,71 @@
 "use client";
 
 import { Routes, Route, Navigate } from "react-router-dom";
-import ProtectedRoute from "./context/ProtectedRoute";
-import PublicRoute from "./context/PublicRoute";
-import Chatbot from "./chatbot/Chatbot"
 
-// Auth
+// Layout
+import MainLayout from "./layouts/MainLayout"; // MainLayout includes <Chatbot /> + <Outlet />
+
+// Auth / Public
 import Login from "./pages/Login/Login";
-import Register from "./pages/registration/Register";
-// import EsewaDebugger from "./pages/EsewaDebugger";
+import Register from "./pages/Registration/Register";
+import ForgetPassword from "./pages/ForgotPassword/ForgotPassword";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailure from "./pages/PaymentFailure";
 
-// User pages
+// Protected
+import ProtectedRoute from "./context/ProtectedRoute";
+
+// User Pages
 import UserDashboard from "./User/Dashboard";
-import IssuedBooks from "./pages/IssuedBooks/IssuedBooks";
 import BookListPage from "./pages/BookList/BookListPage";
 import BookDetailPage from "./pages/BookDetails/BookDetail";
+import IssuedBooks from "./pages/IssuedBooks/IssuedBooks";
+import Notifications from "./pages/Notifications/Notifications";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
-import Notifications from "./pages/Notifications/Notifications";
 
-// Employee/Admin pages
-import Dashboard from "./pages/Dashboard/Dashboard";
+// Employee/Admin Pages
 import AddBook from "./pages/AddBook/AddBook";
 import EditBook from "./pages/EditBook/EditBook";
 import BookList from "./pages/BookList1/BookList1";
 import BookDetail from "./pages/BookDetail/BookDetail";
 import AdminBooks from "./pages/AdminBooks/AdminBooks";
 import Transaction from "./pages/Transaction/Transaction";
+import NoticePage from "./pages/Notice/NoticePage";
 
-// Layouts
-import UserLayout from "./UserLayout";
-import EmployeeLayout from "./EmployeeLayout";
-import ForgetPassword from "./pages/ForgotPassword/ForgotPassword"
 // Misc
 import Unauthorized from "./pages/PageNotFound/NotFound";
-import NoticePage from "./pages/Notice/NoticePage";
-import PaymentFailure from "./pages/PaymentFailure";
-import PaymentSuccess from "./pages/PaymentSuccess";
-
 
 function App() {
   return (
     <Routes>
 
-      {/* Root Redirect */}
+      {/* Root redirect */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* ================= PUBLIC ROUTES ================= */}
-      <Route element={<Chatbot />}>
-      <Route element={<PublicRoute />}>
-      
+      {/* MainLayout wraps all pages including Chatbot */}
+      <Route element={<MainLayout />}>
+
+        {/* ============ PUBLIC ROUTES ============ */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgetPassword />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/payment-failure" element={<PaymentFailure />} />
-        {/* <Route path="/esewa-debugger" element={<EsewaDebugger />} /> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgetPassword/>} />
-        <Route path="/signup" element={<Register />} />
-      
-      </Route>
 
-      {/* ================= USER ROUTES ================= */}
-      <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-        <Route element={<UserLayout />}>
-        
+        {/* ============ USER PROTECTED ROUTES ============ */}
+        <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/books" element={<BookListPage />} />
           <Route path="/books/:id" element={<BookDetailPage />} />
           <Route path="/issued-books" element={<IssuedBooks />} />
           <Route path="/notifications" element={<Notifications />} />
-          {/* <Route path="/profile" element={<Profile />} />
-          <Route path="/edit-profile" element={<EditProfile />} /> */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
-        
-      </Route>
 
-      {/* ================= EMPLOYEE / ADMIN ROUTES ================= */}
-      <Route element={<ProtectedRoute allowedRoles={["employee"]} />}>
-      
-        <Route element={<EmployeeLayout/>}>
+        {/* ============ EMPLOYEE/ADMIN PROTECTED ROUTES ============ */}
+        <Route element={<ProtectedRoute allowedRoles={["employee"]} />}>
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/add-book" element={<AddBook />} />
           <Route path="/edit-book/:id" element={<EditBook />} />
@@ -85,27 +73,20 @@ function App() {
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/emp-books" element={<AdminBooks />} />
           <Route path="/transaction" element={<Transaction />} />
-          <Route path="/notices" element={<NoticePage/>} />
-          {/* <Route path="/profile" element={<Profile />} />
-          <Route path="/edit-profile" element={<EditProfile />} /> */}
-          {/* <Route path="/notice" element={<Notices />} /> */}
+          <Route path="/notices" element={<NoticePage />} />
         </Route>
-        
-      </Route>
-      <Route element={<ProtectedRoute allowedRoles={["user", "employee"]} />}>
-        <Route element={<UserLayout />}>
+
+        {/* ============ SHARED PROTECTED ROUTES ============ */}
+        <Route element={<ProtectedRoute allowedRoles={["user", "employee"]} />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
+
+        {/* ============ FALLBACK / ERROR ROUTES ============ */}
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="*" element={<div>Page Not Found</div>} />
+
       </Route>
-
-      {/* Unauthorized */}
-      <Route path="/unauthorized" element={<Unauthorized />} />
-
-      {/* Fallback */}
-      <Route path="*" element={<div>Page Not Found</div>} />
-
-    </Route>
     </Routes>
   );
 }

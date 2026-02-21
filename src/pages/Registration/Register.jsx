@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { initiateEsewaPayment, generateTransactionId, PRICING_PLANS } from '../../services/esewa';
+import { initiateEsewaPayment, generateTransactionId, PRICING_PLANS } from '../../Services/esewa';
 import './Register.css';
 
 const Register = () => {
